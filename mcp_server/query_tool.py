@@ -127,7 +127,7 @@ The syntax to query is a subset of MangoDB aggregation pipeline JSON with suppor
 
 1. $lookup: Joins another collection :.
   - "from" must refer to a model name listed in ref in the schema (if defined).
-  - "localField" must be a field path on the base colletion or a previous $lookup alias.
+  - "localField" must be a field path on the base collection or a previous $lookup alias.
   - "foreignField" must be "_id"
   - "as" defines an alias used in subsequent $match and $lookup stages as a prefix (e.g., alias.field).
 2. $match: Filter documents using comparison and logical operators.
