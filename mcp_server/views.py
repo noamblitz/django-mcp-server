@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from mcp.server import FastMCP
 from rest_framework.views import APIView
 
 from mcp_server.djangomcp import global_mcp_server
