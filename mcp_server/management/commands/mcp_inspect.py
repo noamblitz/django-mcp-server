@@ -17,10 +17,10 @@ async def _check_client():
     svr_wr, cl_rd = anyio.create_memory_object_stream(0)
 
     async def run_server():
-        await mcp_server._mcp_server.run(
+        await mcp_server._lowlevel_server.run(
             svr_rd,
             svr_wr,
-            mcp_server._mcp_server.create_initialization_options(),
+            mcp_server._lowlevel_server.create_initialization_options(),
         )
 
     async def run_client():
