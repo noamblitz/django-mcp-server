@@ -90,7 +90,7 @@ async def _call_starlette_handler(django_request: HttpRequest, session_manager: 
         "headers": [
                        (key.lower().encode("latin-1"), value.encode("latin-1"))
                        for key, value in django_request.headers.items() if key.lower() != "content-length"
-                   ] + [("Content-Length", str(len(body)).encode("latin-1"))],
+                   ] + [(b"content-length", str(len(body)).encode("latin-1"))],
         "path": django_request.path,
         "raw_path": django_request.get_full_path().encode("utf-8"),
         "query_string": django_request.META["QUERY_STRING"].encode("latin-1"),
