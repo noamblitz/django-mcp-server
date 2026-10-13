@@ -261,7 +261,7 @@ def apply_json_mango_query(queryset: QuerySet, pipeline: list[dict],
                 op, arg = next(iter(agg.items()))
                 if op == "$sum":
                     if arg == 1:
-                        annotations[key] = Count("id")
+                        annotations[key] = Count("pk")
                     elif isinstance(arg, str) and arg.startswith("$"):
                         annotations[key] = Sum(_translate_field(arg[1:], lookup_alias_map))
                     else:
@@ -284,7 +284,7 @@ def apply_json_mango_query(queryset: QuerySet, pipeline: list[dict],
 
                 elif op == "$count":
                     if arg == 1:
-                        annotations[key] = Count("id")
+                        annotations[key] = Count("pk")
                     elif isinstance(arg, str) and arg.startswith("$"):
                         annotations[key] = Count(_translate_field(arg[1:], lookup_alias_map))
                     else:

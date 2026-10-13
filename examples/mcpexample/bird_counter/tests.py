@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.test import TestCase
 
-from .models import Bird, Location, City
+from .models import Bird, Location, City, Observer
 from mcp_server import query_tool
 
 
@@ -438,3 +438,22 @@ class UndeclaredFieldsNotReturnedTest(TestCase):
         for row in rows:
             self.assertIn("count", row)
             self.assertIn("location_id", row)
+
+class GroupCountOnNonIdPrimaryKeyTest(TestCase):
+    """$count / $sum 1 must count rows of a model whose primary key is not called ``id``."""
+
+    def setUp(self):
+        cities = City.objects.bulk_create([
+            City(name='New York', country='USA'),
+            City(name='Paris', country='FRA'),
+        ])
+        Observer.objects.bulk_create([
+            Observer(badge='A1', name='Ann', city=cities[0]),
+            Observer(badge='B2', name='Bob', city=cities[0]),
+            Observer(badge='C3', name='Cid', city=cities[1]),
+        ])
+
+    def test_group_count_uses_primary_key(self):
+        pipeline = [{"$group": {"_id": "$city", "n": {"$count": 1}, "rows": {"$sum": 1}}}]
+        result = sorted(query_tool.apply_json_mango_query(Observer.objects.all(), pipeline), key=lambda r: r["n"])
+        self.assertEqual([(1, 1), (2, 2)], [(r["n"], r["rows"]) for r in result])
